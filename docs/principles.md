@@ -27,7 +27,7 @@
 
 找出仓库真实的 lint / 类型检查 / 测试 / 构建命令并运行；PR 中写出命令与结果，证据优先于自信。
 
-- 正例：PR 写明 `markdownlint "**/*.md"` 运行通过（规则集来自 `.markdownlint.jsonc`），并附关键输出行。
+- 正例：PR 写明 `npx --yes markdownlint-cli@0.41.0 "**/*.md"` 运行通过（规则集来自 `.markdownlint.jsonc`），并附关键输出行。
 - 反例：只读代码就说「应该能跑」，未执行任何检查。
 
 ## 5. 安全边界
