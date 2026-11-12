@@ -1,0 +1,38 @@
+name: docs-lint
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  markdownlint:
+    name: markdownlint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Lint Markdown
+        run: npx --yes markdownlint-cli@0.41.0 "**/*.md"
+
+  secret-scan:
+    name: secret-scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Block token-like prefixes
+        run: |
+          if grep -rInE '(grape_|ghp_|sk-)[A-Za-z0-9_-]{16,}' --exclude-dir=.git .; then
+            echo "::error::疑似密钥前缀命中，请移除后再提交"
+            exit 1
+          fi
+          echo "未发现疑似密钥前缀"
